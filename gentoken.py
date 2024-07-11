@@ -1,9 +1,6 @@
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
-from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload
-from google.oauth2 import service_account
 import os
 import configparser as cp
 import json
@@ -18,26 +15,6 @@ client_secret = config['GOOGLE'].get('CLIENT_SECRET')
 project_id = config['GOOGLE'].get('PROJECT_ID')
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 
-#########################
-#       HOW TO USE
-#########################
-# Import this method in your main code
-# Create config.json file having the following vars with values filled
-'''
-[GOOGLE]
-CLIENT_ID = 
-CLIENT_SECRET = 
-PROJECT_ID = 
-USE_SERVICE_ACCOUNTS =
-GDRIVE_FOLDER_ID = 
-'''
-# REMEBER TO RUN THIS CODE on LOCAL MACHINE ONLY & NOT ON REMOTE MACHINE
-# call writeCredentialsJson() to create credentails.json
-# call genTokenJson() to create token.json
-# Store the returned value from above code.
-# Thats it, credentials.json and token.json files will be generated
-
-
 #create Credenstials.json
 def writeCredentialsJson():
     # Prepare data to be written to credentials.json
@@ -50,7 +27,10 @@ def writeCredentialsJson():
                 "auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":client_secret,
                 "redirect_uris":["localhost"]
             }
-        }   
+        }
+
+    # Ensure the directory exists
+    # os.makedirs('json_files', exist_ok=True)   
 
     # Write data to credentials.json
     with open('credentials.json', 'w') as json_file:
